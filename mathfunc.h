@@ -3,7 +3,7 @@
 #include <limits.h>
 
 namespace math{
-void sum(int &a, int &b, int &c) //суммирование a + b
+inline void sum(int &a, int &b, int &c) //суммирование a + b
 {
     if (((b > 0) && (a > INT_MAX - b)) ||
         ((b < 0) && (a < INT_MIN - b))) throw -1;
@@ -78,4 +78,5 @@ inline int fact(int n) // факториал
     return n * prev;
 }
 }
+
 #endif
