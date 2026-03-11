@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
         exit(0);
     }
     //check
-    if(argc != 8)
+    if(argc != 7)
     {
         printf("You insert wrong expression");
         exit(0);
@@ -131,4 +131,5 @@ void run(struct data &calcData, int argc, char *argv[]){
     check(calcData);
     calculate(calcData);
     print(calcData);
+
 }
