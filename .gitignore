@@ -1,0 +1,27 @@
+src/lib/
+# Билды
+build/
+bin/
+out/
+
+# Скомпилированные файлы
+*.o
+*.so
+*.a
+*.dll
+*.exe
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake-build-*/
+
+# Логи
+*.log
+
+# Временные файлы
+*.tmp
+*.swp
+
+# VS Code (локальные настройки)
+.vscode/

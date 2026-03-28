@@ -10,7 +10,7 @@ include(FetchContent)
 FetchContent_Declare(
     mathfunc
     GIT_REPOSITORY https://github.com/wiredline/mathfunc.git
-    GIT_TAG main
+    GIT_TAG main 
 )
 FetchContent_MakeAvailable(mathfunc)
 
