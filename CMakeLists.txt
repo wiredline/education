@@ -1,37 +1,45 @@
-cmake_minimum_required(VERSION 3.14)
-project(calcproject)
+cmake_minimum_required(VERSION 3.16)
+project(EducationProject LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
-include(FetchContent)
+find_package(spdlog REQUIRED)
+find_package(nlohmann_json REQUIRED)
+find_package(fmt REQUIRED)
 
-FetchContent_Declare(
-    mathfunc
-    GIT_REPOSITORY https://github.com/wiredline/mathfunc.git
-    GIT_TAG main
-)
-FetchContent_MakeAvailable(mathfunc)
+file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
-add_executable(main main.cpp)
-
-target_include_directories(main PRIVATE ${mathfunc_SOURCE_DIR})
-find_program(CLANG_TIDY_EXE NAMES clang-tidy)
-if(CLANG_TIDY_EXE)
-    set_target_properties(main PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(EXEC_NAME main_release)
+else()
+    set(EXEC_NAME main_debug)
 endif()
 
-find_program(CLANG_FORMAT_EXE NAMES clang-format)
-if(CLANG_FORMAT_EXE)
-    message(STATUS "clang-format found: ${CLANG_FORMAT_EXE}")
-    file(GLOB_RECURSE ALL_CXX_FILES
-         "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
-         "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
-    )
-    add_custom_target(
-        clang_format
-        COMMAND ${CLANG_FORMAT_EXE} -i ${ALL_CXX_FILES}
-        COMMENT "Formatting all source files with clang-format"
-    )
+add_executable(${EXEC_NAME} ${SOURCES})
+
+target_include_directories(${EXEC_NAME}
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/src/include
+)
+
+target_link_libraries(${EXEC_NAME}
+    PRIVATE
+    spdlog::spdlog
+    fmt::fmt
+    nlohmann_json::nlohmann_json
+)
+
+if(MSVC)
+    target_compile_options(${EXEC_NAME} PRIVATE /W4 /WX)
+else()
+    target_compile_options(${EXEC_NAME} PRIVATE -Wall -Wextra -Werror)
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(${EXEC_NAME} PRIVATE DEBUG)
+    message(STATUS "Build type: Debug")
+else()
+    target_compile_definitions(${EXEC_NAME} PRIVATE NDEBUG)
+    message(STATUS "Build type: Release")
 endif()
