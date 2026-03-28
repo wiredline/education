@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include "./include/logger.h"
 
 class JsonParse {
 private:
@@ -151,6 +152,7 @@ public:
       return std::make_unique<math::MaxMath>();
     if (op == "!")
       return std::make_unique<math::FactMath>();
+    Logger::Instance().LogWarn("Operation not set or invalid");
     throw std::invalid_argument("Unknown operation: " + op);
   }
 };
@@ -164,6 +166,7 @@ public:
   void PrintToCMD() const {
     std::cout << "Result of calculating is: ";
     std::cout << m_result << std::endl;
+    Logger::Instance().LogInfo("Program Closed");
   }
 };
 
@@ -206,6 +209,7 @@ public:
 int main(int argc, char *argv[]) //'{"operation": "+", "args": [3, 5]}'
 {
   // help
+  Logger::Instance().LogInfo("Program started");
   try {
     if (argc == 1 || std::string(argv[1]) == "-h") {
       printf("This program use for calculation\n");
