@@ -1,37 +1,35 @@
-cmake_minimum_required(VERSION 3.14)
-project(calcproject)
+cmake_minimum_required(VERSION 3.15)
+project(EducationProject LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
-include(FetchContent)
+include_directories(${PROJECT_SOURCE_DIR}/src/include)
 
-FetchContent_Declare(
-    mathfunc
-    GIT_REPOSITORY https://github.com/wiredline/mathfunc.git
-    GIT_TAG main 
-)
-FetchContent_MakeAvailable(mathfunc)
+file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
-add_executable(main main.cpp)
+add_executable(main ${SOURCES})
 
-target_include_directories(main PRIVATE ${mathfunc_SOURCE_DIR})
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
 find_program(CLANG_TIDY_EXE NAMES clang-tidy)
 if(CLANG_TIDY_EXE)
-    set_target_properties(main PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
+    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
 endif()
 
 find_program(CLANG_FORMAT_EXE NAMES clang-format)
 if(CLANG_FORMAT_EXE)
-    message(STATUS "clang-format found: ${CLANG_FORMAT_EXE}")
-    file(GLOB_RECURSE ALL_CXX_FILES
-         "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
-         "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
-    )
     add_custom_target(
-        clang_format
-        COMMAND ${CLANG_FORMAT_EXE} -i ${ALL_CXX_FILES}
+        clangformat
+        COMMAND ${CLANG_FORMAT_EXE} -i ${SOURCES}
         COMMENT "Formatting all source files with clang-format"
     )
+endif()
+
+if(MSVC)
+    target_compile_options(main PRIVATE /W4 /WX)
+else()
+    target_compile_options(main PRIVATE -Wall -Wextra -Werror)
 endif()

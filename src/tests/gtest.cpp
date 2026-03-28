@@ -2,10 +2,8 @@
 
 #include <gtest/gtest.h>
 #include <memory>
-#include <..\include/mathfunc.h>
-#include "..\main.cpp"
-#include <string_view>
-#include <
+#include <mathfunc.h>
+#include "../main.cpp"
 
 //JsonParse
 TEST(JsonParseTest, ValidJson){
@@ -134,11 +132,4 @@ TEST(DataCalculate, UnknownOperation) {
         DataCalculate::Create("%"),
         std::invalid_argument
     );
-}
-
-//main test
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }
