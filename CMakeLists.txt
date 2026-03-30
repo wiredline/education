@@ -10,20 +10,31 @@ find_package(fmt REQUIRED)
 
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
+include(FetchContent)
+FetchContent_Declare(
+    mathfunc
+    GIT_REPOSITORY https://github.com/wiredline/mathfunc.git
+    GIT_TAG main
+)
+FetchContent_MakeAvailable(mathfunc)
+
+file(GLOB MATHFUNC_SOURCES "${mathfunc_SOURCE_DIR}/*.cpp")
+
+add_executable(main ${SOURCES} ${MATHFUNC_SOURCES})
+
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(EXEC_NAME main_release)
+    set_target_properties(main PROPERTIES OUTPUT_NAME main_release)
 else()
-    set(EXEC_NAME main_debug)
+    set_target_properties(main PROPERTIES OUTPUT_NAME main_debug)
 endif()
 
-add_executable(${EXEC_NAME} ${SOURCES})
-
-target_include_directories(${EXEC_NAME}
+target_include_directories(main
     PRIVATE
     ${PROJECT_SOURCE_DIR}/src/include
+    ${mathfunc_SOURCE_DIR}
 )
 
-target_link_libraries(${EXEC_NAME}
+target_link_libraries(main
     PRIVATE
     spdlog::spdlog
     fmt::fmt
@@ -31,15 +42,15 @@ target_link_libraries(${EXEC_NAME}
 )
 
 if(MSVC)
-    target_compile_options(${EXEC_NAME} PRIVATE /W4 /WX)
+    target_compile_options(main PRIVATE /W4 /WX)
 else()
-    target_compile_options(${EXEC_NAME} PRIVATE -Wall -Wextra -Werror)
+    target_compile_options(main PRIVATE -Wall -Wextra -Werror)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_definitions(${EXEC_NAME} PRIVATE DEBUG)
+    target_compile_definitions(main PRIVATE DEBUG)
     message(STATUS "Build type: Debug")
 else()
-    target_compile_definitions(${EXEC_NAME} PRIVATE NDEBUG)
+    target_compile_definitions(main PRIVATE NDEBUG)
     message(STATUS "Build type: Release")
 endif()

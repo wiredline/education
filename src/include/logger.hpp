@@ -19,20 +19,22 @@ class Logger {
     void LogError(const std::string& msg){ m_logger->error(msg); }
     void LogDebug(const std::string& msg){ m_logger->debug(msg); }
 
-        Logger(const Logger&) =delete;
-        Logger& operator=(const Logger&) = delete;
+        Logger(const Logger&) =delete; //конструктор копирования
+        Logger& operator=(const Logger&) = delete; //оператор копирования
+        Logger(Logger&&) =delete; //конструктор перемещения
+        Logger& operator=(Logger&&) = delete; //оператор перемещения
+        ~Logger() = default; //деструктор
     
     private:
-    std::shared_ptr<spdlog::logger> m_logger;
+    std::unique_ptr<spdlog::logger> m_logger;
 
     Logger() {
         auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
         console_sink->set_level(spdlog::level::debug);
 
-        m_logger = std::make_shared<spdlog::logger>("console", console_sink);
+        m_logger = std::make_unique<spdlog::logger>("console", console_sink);
         m_logger->set_level(spdlog::level::debug);
         m_logger->set_pattern("[%Y-%m-%d %H:%M:%S] [%l] %v");
-        spdlog::register_logger(m_logger);
     }
 };
 
