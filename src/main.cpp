@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) //'{"operation": "+", "args": [3, 5]}'
   //help
    if(!Runner::helper(argc, argv)){
     return 0;
-   }
+   } 
 
   //start
   try{
