@@ -4,12 +4,14 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <getopt.h>
+#include <memory>
 #include "DataCalculate.hpp"
 #include "JsonCheck.hpp"
 #include "JsonParse.hpp"
 #include "Printer.hpp"
 #include "logger.hpp"
-#include <getopt.h>
+#include "DbRepository.hpp"
 
 class Runner {
 private:
@@ -17,9 +19,16 @@ private:
   std::string m_operation;
   std::string m_input;
   int result;
+  std::unique_ptr<PgClient> m_db;
+  std::unique_ptr<DbRepository> m_repo;
 
 public:
-  explicit Runner(const std::string& input) : m_input(input) {}
+  explicit Runner(const std::string& input) : m_input(input) {
+    m_db = std::make_unique<PgClient>(
+      "host=localhost port=5432 dbname=calc_db user=calc_user password=P@ssw0rd"
+    );
+    m_repo = std::make_unique<DbRepository>(*m_db);
+  }
   // help
   static bool helper(int argc, char *argv[]){
       
@@ -70,6 +79,9 @@ public:
     // Calculate
     auto operation = DataCalculate::Create(m_operation);
     result = operation->calculate(DataSet);
+
+    //DBInsert
+    m_repo->InsertOperation(m_input, "TEMP_KEY", result, 0);
 
     // Printable
     Printer print(result);
