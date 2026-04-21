@@ -21,6 +21,3 @@ Cache lookup
      Save to DB (JSON + key + result + status)
          ↓
      Save to Cache
-
-     usr: calc_user
-     pwd: P@ssw0rd
