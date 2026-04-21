@@ -4,6 +4,8 @@
 #include <PgResult.hpp>
 #include <string>
 #include <memory>
+#include <vector>
+#include <tuple>
 
 class DbRepository {
 public:
@@ -37,6 +39,34 @@ public:
     PgResult res_guard(raw); //RAII cleaner
     if(PQresultStatus(raw) != PGRES_COMMAND_OK) throw std::runtime_error(PQerrorMessage(db_.GetRaw()));
 }
+    std::vector<std::tuple<std::string, int , int>> LoadAll(){
+        PGresult* raw = PQexec(
+            db_.GetRaw(), 
+            "SELECT normalized_key, result, status FROM operations;"
+        );
+
+        if(!raw){
+            throw std::runtime_error("SELECT failed");
+        }
+        PgResult res_guard(raw);
+
+        if(PQresultStatus(raw)!= PGRES_TUPLES_OK){
+            throw std::runtime_error(PQerrorMessage(db_.GetRaw()));
+        }
+        int rows = PQntuples(raw);
+
+        std::vector<std::tuple<std::string, int , int>> data;
+        data.reserve(rows);
+
+        for(int i =0; i<rows;++i){
+            std::string key = PQgetvalue(raw, i, 0);
+            int result = std::stoi(PQgetvalue(raw, i, 1));
+            int status = std::stoi(PQgetvalue(raw, i, 2));
+
+            data.emplace_back(key, result, status);
+        }
+        return data;
+    }
 private:
     PgClient& db_;
 };
