@@ -12,6 +12,8 @@
 #include "Printer.hpp"
 #include "logger.hpp"
 #include "DbRepository.hpp"
+#include "cache.hpp"
+#include "KeyUtil.hpp"
 
 class Runner {
 private:
@@ -21,6 +23,7 @@ private:
   int result;
   std::unique_ptr<PgClient> m_db;
   std::unique_ptr<DbRepository> m_repo;
+  inline static Cache m_cache;
 
 public:
   explicit Runner(const std::string& input) : m_input(input) {
@@ -28,6 +31,8 @@ public:
       "host=localhost port=5432 dbname=calc_db user=calc_user password=P@ssw0rd"
     );
     m_repo = std::make_unique<DbRepository>(*m_db);
+
+    WarmUpCache();
   }
   // help
   static bool helper(int argc, char *argv[]){
@@ -60,14 +65,25 @@ public:
     throw std::runtime_error("JSON input not provided. Use -j '<json>'");
   }
   
+  void WarmUpCache(){
+    Logger::Instance().LogInfo("Loading Cache from DB");
+    auto data = m_repo->LoadAll();
+
+    for(const auto& [key, result, status] : data){
+      m_cache.Put(key, {result, status});
+    }
+
+    Logger::Instance().LogInfo("cache loaded with"+ std::to_string(data.size()));
+  }
+
    void StartTask(){
-    // Parser
+    // 1.Parser
     JsonParse parser;
     parser.Parse(m_input);
     DataSet = parser.GetArgs();
     m_operation = parser.GetOperation();
 
-    // Checker
+    //2.Checker
     JsonCheck checker;
     try {
       checker.Validate(m_operation, DataSet);
@@ -76,12 +92,36 @@ public:
       throw;
     }
 
-    // Calculate
-    auto operation = DataCalculate::Create(m_operation);
-    result = operation->calculate(DataSet);
+    //3. Key
+    std::string key = MakeKey(m_operation, DataSet);
 
-    //DBInsert
-    m_repo->InsertOperation(m_input, "TEMP_KEY", result, 0);
+    //4. Cache check
+    auto cached = m_cache.Get(key);
+    if (cached.has_value()){
+      Logger::Instance().LogInfo("Cache hit");
+      Printer print(cached->result);
+      print.PrintToCMD();
+      return;
+    }
+    Logger::Instance().LogInfo("Cache miss");
+
+    // 5.Calculate
+    auto operation = DataCalculate::Create(m_operation);
+
+    int result =0;
+    int status =0; //0 -ok 1-error
+
+    try{
+      result = operation->calculate(DataSet);
+    }catch(...){
+      status =1;
+    }
+
+    //6.Save to cache
+    m_cache.Put(key, {result, status});
+
+    //7. Save to DB
+    m_repo->InsertOperation(m_input,key, result, status);
 
     // Printable
     Printer print(result);
