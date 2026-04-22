@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(spdlog REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(fmt REQUIRED)
+find_package(PostgreSQL REQUIRED)
 
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
@@ -39,6 +40,7 @@ target_link_libraries(main
     spdlog::spdlog
     fmt::fmt
     nlohmann_json::nlohmann_json
+    PostgreSQL::PostgreSQL
 )
 
 if(MSVC)
