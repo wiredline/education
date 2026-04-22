@@ -20,4 +20,8 @@ Cache lookup
          ↓
      Save to DB (JSON + key + result + status)
          ↓
+<<<<<<< HEAD
      Save to Cache
+=======
+     Save to Cache
+>>>>>>> 3ce2e6b (feat: raw pointers deleted, added PGresultPtr and PGconnPtr as smart pointers)

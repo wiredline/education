@@ -73,7 +73,7 @@ public:
       m_cache.Put(key, {result, status});
     }
 
-    Logger::Instance().LogInfo("cache loaded with"+ std::to_string(data.size()));
+    Logger::Instance().LogInfo("cache loaded with "+ std::to_string(data.size()));
   }
 
    void StartTask(){
