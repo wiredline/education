@@ -1,8 +1,8 @@
 #ifndef DATACALC_H
 #define DATACALC_H
 
-#include <memory>
 #include "mathfunc.h"
+#include <memory>
 
 class DataCalculate {
 public:

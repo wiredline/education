@@ -1,10 +1,10 @@
 #ifndef JSONPARSE_H
 #define JSONPARSE_H
 
-#include <vector>
-#include <string>
-#include <nlohmann/json.hpp>
 #include "logger.hpp"
+#include <nlohmann/json.hpp>
+#include <string>
+#include <vector>
 
 class JsonParse {
 private:
