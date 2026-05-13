@@ -4,16 +4,16 @@
 int main(int argc, char *argv[]) //'{"operation": "+", "args": [3, 5]}'
 {
   Logger::Instance().LogInfo("Program started");
-  //help
-   if(!Runner::helper(argc, argv)){
+  // help
+  if (!Runner::helper(argc, argv)) {
     return 0;
-   }
+  }
 
-  //start
-  try{
-  Runner runner(Runner::GetOptParse(argc, argv)); 
-  runner.StartTask();
-  }catch(const std::exception &error){
+  // start
+  try {
+    Runner runner(Runner::GetOptParse(argc, argv));
+    runner.StartTask();
+  } catch (const std::exception &error) {
     Logger::Instance().LogError(error.what());
     return 1;
   }
