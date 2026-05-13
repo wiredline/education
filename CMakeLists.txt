@@ -56,3 +56,28 @@ else()
     target_compile_definitions(main PRIVATE NDEBUG)
     message(STATUS "Build type: Release")
 endif()
+
+# --- clang-format
+find_program(CLANG_FORMAT_EXE NAMES clang-format)
+
+if(CLANG_FORMAT_EXE)
+
+    file(GLOB_RECURSE ALL_SOURCE_FILES
+        "${PROJECT_SOURCE_DIR}/src/*.cpp"
+        "${PROJECT_SOURCE_DIR}/src/include/*.h"
+    )
+
+    add_custom_target(
+        clangformat
+        COMMAND ${CLANG_FORMAT_EXE}
+        -i
+        ${ALL_SOURCE_FILES}
+        COMMENT "Running clang-format..."
+    )
+endif()
+# --- clang-tidy
+find_program(CLANG_TIDY_EXE NAMES clang-tidy)
+
+if(CLANG_TIDY_EXE)
+    set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE})
+endif()
