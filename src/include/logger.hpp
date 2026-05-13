@@ -2,40 +2,40 @@
 #define LOGGER_H
 
 #include <memory>
-#include <string>
-#include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/spdlog.h>
+#include <string>
 
 class Logger {
 
-    public:
-        static Logger& Instance(){
-            static Logger Instance;
-            return Instance;
-        }
+public:
+  static Logger &Instance() {
+    static Logger Instance;
+    return Instance;
+  }
 
-    void LogInfo(const std::string& msg){ m_logger->info(msg); }
-    void LogWarn(const std::string& msg){ m_logger->warn(msg); }
-    void LogError(const std::string& msg){ m_logger->error(msg); }
-    void LogDebug(const std::string& msg){ m_logger->debug(msg); }
+  void LogInfo(const std::string &msg) { m_logger->info(msg); }
+  void LogWarn(const std::string &msg) { m_logger->warn(msg); }
+  void LogError(const std::string &msg) { m_logger->error(msg); }
+  void LogDebug(const std::string &msg) { m_logger->debug(msg); }
 
-        Logger(const Logger&) =delete; //конструктор копирования
-        Logger& operator=(const Logger&) = delete; //оператор копирования
-        Logger(Logger&&) =delete; //конструктор перемещения
-        Logger& operator=(Logger&&) = delete; //оператор перемещения
-        ~Logger() = default; //деструктор
-    
-    private:
-    std::unique_ptr<spdlog::logger> m_logger;
+  Logger(const Logger &) = delete; // конструктор копирования
+  Logger &operator=(const Logger &) = delete; // оператор копирования
+  Logger(Logger &&) = delete; // конструктор перемещения
+  Logger &operator=(Logger &&) = delete; // оператор перемещения
+  ~Logger() = default;                   // деструктор
 
-    Logger() {
-        auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-        console_sink->set_level(spdlog::level::debug);
+private:
+  std::unique_ptr<spdlog::logger> m_logger;
 
-        m_logger = std::make_unique<spdlog::logger>("console", console_sink);
-        m_logger->set_level(spdlog::level::debug);
-        m_logger->set_pattern("[%Y-%m-%d %H:%M:%S] [%l] %v");
-    }
+  Logger() {
+    auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+    console_sink->set_level(spdlog::level::debug);
+
+    m_logger = std::make_unique<spdlog::logger>("console", console_sink);
+    m_logger->set_level(spdlog::level::debug);
+    m_logger->set_pattern("[%Y-%m-%d %H:%M:%S] [%l] %v");
+  }
 };
 
 #endif
