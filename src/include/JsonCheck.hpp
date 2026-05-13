@@ -1,9 +1,9 @@
 #ifndef JSONCHECK_H
 #define JSONCHECK_H
 
+#include <climits>
 #include <stdexcept>
 #include <string>
-#include <climits>
 #include <vector>
 
 class JsonCheck {
@@ -76,7 +76,7 @@ public:
     }
 
     if (op == "^") {
-      
+
       int base = args[0], exp = args[1];
 
       if (exp < 0) {
