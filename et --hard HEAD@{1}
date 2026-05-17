@@ -1,0 +1,30 @@
+[33m7a75bfd[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mwith-threads[m[33m, [m[1;31morigin/with-threads[m[33m)[m HEAD@{0}: reset: moving to 7a75bfd
+[33m2942552[m HEAD@{1}: reset: moving to 2942552
+[33m7482ac1[m HEAD@{2}: commit: deleted: src/networktest
+[33mdfca33c[m HEAD@{3}: commit: deleted: calc-service-1.0.0-Linux.deb
+[33m2942552[m HEAD@{4}: commit: feat: added gtests and deb install
+[33m7a75bfd[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mwith-threads[m[33m, [m[1;31morigin/with-threads[m[33m)[m HEAD@{5}: commit: feat: added miltithreading
+[33m68ec0ae[m HEAD@{6}: commit: test
+[33md4d0443[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{7}: checkout: moving from main to with-threads
+[33md4d0443[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{8}: pull --tags origin main: Fast-forward
+[33macbf104[m HEAD@{9}: checkout: moving from with-stl to main
+[33m2895029[m[33m ([m[1;31morigin/with-stl[m[33m, [m[1;32mwith-stl[m[33m)[m HEAD@{10}: commit: feat: fully formated project
+[33mbe7580e[m HEAD@{11}: commit: fix: clang format and clean fixed to stable use
+[33mb732840[m HEAD@{12}: rebase (finish): returning to refs/heads/with-stl
+[33mb732840[m HEAD@{13}: rebase (continue): feat: raw pointers deleted, added PGresultPtr and PGconnPtr as smart pointers
+[33m0a6bafa[m HEAD@{14}: pull --rebase origin with-stl (start): checkout 0a6bafa0c77973659d79b9ab46b745c5cc01c9c9
+[33m3ce2e6b[m HEAD@{15}: commit: feat: raw pointers deleted, added PGresultPtr and PGconnPtr as smart pointers
+[33m98998dd[m HEAD@{16}: commit: feat: added cache warmup, added cache searching, added normalization key
+[33m966831b[m HEAD@{17}: commit: feat: added pq db insertion and storage
+[33mc5ac298[m HEAD@{18}: commit: Test new branch
+[33m488ea0c[m[33m ([m[1;31morigin/with-classes[m[33m, [m[1;32mwith-classes[m[33m)[m HEAD@{19}: checkout: moving from with-classes to with-stl
+[33m488ea0c[m[33m ([m[1;31morigin/with-classes[m[33m, [m[1;32mwith-classes[m[33m)[m HEAD@{20}: commit: testnew
+[33m549f741[m HEAD@{21}: commit: feat: added getopt and fully rebuild program
+[33m4e22b98[m HEAD@{22}: pull --rebase origin with-classes (finish): returning to refs/heads/with-classes
+[33m4e22b98[m HEAD@{23}: pull --rebase origin with-classes (pick): feat: spdlog insertion in project
+[33m36c6fbe[m HEAD@{24}: pull --rebase origin with-classes (start): checkout 36c6fbe9adfd8259ab88653084e5025adc441055
+[33mc376dcb[m HEAD@{25}: commit: feat: spdlog insertion in project
+[33m8e36484[m HEAD@{26}: commit: +gtests
+[33m3714d8e[m HEAD@{27}: commit: feat: Starting new branch
+[33macbf104[m HEAD@{28}: checkout: moving from main to with-classes
+[33macbf104[m HEAD@{29}: clone: from github.com:wiredline/education.git
