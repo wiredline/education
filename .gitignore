@@ -15,9 +15,11 @@ out/
 CMakeFiles/
 CMakeCache.txt
 cmake-build-*/
+build-tsan/
 
 # Логи
 *.log
+*.clang-format
 
 # Временные файлы
 *.tmp

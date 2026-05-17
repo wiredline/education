@@ -82,3 +82,17 @@ find_program(CLANG_TIDY_EXE NAMES clang-tidy)
 if(CLANG_TIDY_EXE)
     set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE})
 endif()
+
+option(ENABLE_TSAN "Enable ThreadSanitizer" OFF)
+
+if(ENABLE_TSAN)
+    add_compile_options(
+        -fsanitize=thread
+        -g
+        -O1
+    )
+
+    add_link_options(
+        -fsanitize=thread
+    )
+endif()
