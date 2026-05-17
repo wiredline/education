@@ -16,6 +16,7 @@ CMakeFiles/
 CMakeCache.txt
 cmake-build-*/
 build-tsan/
+_CPack_Packages/
 
 # Логи
 *.log

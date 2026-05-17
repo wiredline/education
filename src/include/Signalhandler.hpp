@@ -10,7 +10,7 @@ namespace
 inline std::atomic_bool *g_running = nullptr;
 void HandleSignal([[maybe_unused]] int signal)
 {
-    if (g_running)
+    if (g_running->load())
     {
         g_running->store(false); // off anything
     }
@@ -27,7 +27,7 @@ class Signalhandler
         std::signal(SIGINT, HandleSignal);
         std::signal(SIGTERM, HandleSignal);
 
-        while (running)
+        while (running.load())
         {
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }

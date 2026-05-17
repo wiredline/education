@@ -22,6 +22,15 @@ Cache lookup
          ↓
 <<<<<<< HEAD
      Save to Cache
-=======
-     Save to Cache
->>>>>>> 3ce2e6b (feat: raw pointers deleted, added PGresultPtr and PGconnPtr as smart pointers)
+
+TCP thread (asio)
+    ↓
+std::queue<std::string> tasks <- legacy input from cmd
+    ↓
+Worker thread
+    ↓
+Runner
+    ↓
+response back to client
+
+127.0.0.1:55555 TCP listen

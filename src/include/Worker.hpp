@@ -2,6 +2,7 @@
 
 #include "logger.hpp"
 #include "runner.hpp"
+#include "task_queue.hpp"
 #include <atomic>
 #include <chrono>
 #include <thread>
@@ -9,16 +10,19 @@
 class Worker
 {
   public:
-    static void Run(std::atomic_bool &running, const std::string& input)
+    static void Run(std::atomic_bool &running, TaskQueue& queue)
     {
         Logger::Instance().LogInfo("Worker started");
-        while (running)
-        {
-
+        while (running.load())
+        {            
+            std::string task;
+            if(!queue.Pop(task)){
+                break;
+            }
             // start
             try
             {
-                Runner runner(input);
+                Runner runner(task);
                 runner.StartTask();
             }
             catch (const std::exception &error)

@@ -1,0 +1,6 @@
+{
+    "port": 55555,
+    "db_host": "localhost",
+    "db_name": "calc_db",
+    "db_user": "calc_user"
+}
