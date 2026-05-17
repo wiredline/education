@@ -82,3 +82,44 @@ find_program(CLANG_TIDY_EXE NAMES clang-tidy)
 if(CLANG_TIDY_EXE)
     set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE})
 endif()
+
+option(ENABLE_TSAN "Enable ThreadSanitizer" OFF)
+
+if(ENABLE_TSAN)
+    add_compile_options(
+        -fsanitize=thread
+        -g
+        -O1
+    )
+
+    add_link_options(
+        -fsanitize=thread
+    )
+endif()
+
+install(TARGETS main
+    RUNTIME DESTINATION bin
+)
+
+install(FILES
+    ${PROJECT_SOURCE_DIR}/config/config.json
+    DESTINATION etc/calc-service
+)
+
+install(FILES
+    ${PROJECT_SOURCE_DIR}/systemd/calc-service.service
+    DESTINATION lib/systemd/system
+)
+
+set(CPACK_GENERATOR "DEB")
+
+set(CPACK_PACKAGE_NAME "calc-service")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_PACKAGE_CONTACT "user@example.com")
+
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "user")
+
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libstdc++6, libc6")
+set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
+
+include(CPack)

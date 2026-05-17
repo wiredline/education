@@ -1,0 +1,17 @@
+[Unit]
+Description=Calc Service
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+
+ExecStart=/usr/local/bin/calc_service
+
+Restart=always
+RestartSec=3
+
+User=root
+WorkingDirectory=/usr/local/bin
+
+[Install]
+WantedBy=multi-user.target
